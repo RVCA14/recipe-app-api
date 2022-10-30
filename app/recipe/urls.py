@@ -7,6 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 from recipe import views
 
+#With this function (router) you can have all methods (POST, GET, PUT, PATCH, DELETE)
 router = DefaultRouter()
 router.register('recipes', views.RecipeViewSet)
 
