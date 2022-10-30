@@ -30,14 +30,6 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
     class Meta(RecipeSerializer.Meta):
         fields = RecipeSerializer.Meta.fields + ['description']
 
-class TagSerializer(serializers.ModelSerializer):
-    """Serializer for tags."""
-
-    class Meta:
-        model = Tag
-        fields = ['id', 'name']
-        read_only_fields = ['id']
-
     def create(self, validated_data):
         """Create a recipe."""
         tags = validated_data.pop('tags', [])
@@ -46,7 +38,7 @@ class TagSerializer(serializers.ModelSerializer):
         for tag in tags:
             tag_obj, created = Tag.objects.get_or_create(
                 user=auth_user,
-                **tags
+                **tag
             )
             recipe.tags.add(tag_obj)
         return recipe
