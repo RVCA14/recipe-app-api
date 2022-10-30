@@ -10,9 +10,11 @@ from recipe import views
 #With this function (router) you can have all methods (POST, GET, PUT, PATCH, DELETE)
 router = DefaultRouter()
 router.register('recipes', views.RecipeViewSet)
+router.register('tags', views.TagViewSet)
 
 app_name = 'recipe'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+
 ]

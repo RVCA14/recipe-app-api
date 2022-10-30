@@ -78,8 +78,6 @@ class PrivateRecipeAPITests(TestCase):
         create_recipe(user=other_user)
         create_recipe(user=self.user)
 
-
-
         recipes = Recipe.objects.filter(user=self.user)
         serializer= RecipeSerializer(recipes, many=True)
 
