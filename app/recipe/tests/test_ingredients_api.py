@@ -18,6 +18,10 @@ def create_user(email='user@example.com',password='test123'):
     """Create and return user"""
     return get_user_model().objects.create_user(email=email, password=password)
 
+def detail_url(ingredient_id):
+    """Create and return ingredient URL"""
+    return reverse('recipe:ingredient-detail', args=[ingredient_id])
+
 class PublicIngredientAPITests(TestCase):
     """Test unauthenticated API requests"""
     def setUp(self):
@@ -27,7 +31,7 @@ class PublicIngredientAPITests(TestCase):
     def test_auth_requierd(self):
         """Test auth is required to get the ingredients of a recipe."""
         res = self.client.get(INGREDIENTS_URL)
-        self.asserEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 class PrivateIngredientAPITests(TestCase):
     """Test authenticated API requiests"""
@@ -60,3 +64,24 @@ class PrivateIngredientAPITests(TestCase):
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], ingredient.name )
         self.assertEqual(res.data[0]['id'], ingredient.id)
+
+    def test_update_ingredient(self):
+        """Test updating ingredient on recipe."""
+        ingredient = Ingredient.objects.create(user=self.user, name='Potatoes')
+        ingredient_url = detail_url(ingredient.id)
+        payload = {'name': 'Rice'}
+
+        res = self.client.patch(ingredient_url,payload, format = 'json')
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        ingredient.refresh_from_db()
+        self.assertEqual(payload['name'], ingredient.name)
+
+    def test_deleting_ingredient(self):
+        """Test deleting ingredient on recipe."""
+        ingredient = Ingredient.objects.create(user=self.user, name='Potatoes')
+        url=detail_url(ingredient.id)
+
+        res = self.client.delete(url)
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Ingredient.objects.filter(id=ingredient.id).exists())
