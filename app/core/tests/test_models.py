@@ -61,7 +61,7 @@ class ModelTests(TestCase):
         self.assertEqual(str(recipe), recipe.title)
 
     def test_create_tag(self):
-        """Test creating a tag is susccessful"""
+        """Test creating a tag is successful"""
         user = get_user_model().objects.create_user('test@example.com','sample123')
         tag = models.Tag.objects.create(
             user=user,
@@ -77,5 +77,34 @@ class ModelTests(TestCase):
             name='Ingredient1'
         )
         self.assertEqual(str(ingredient), ingredient.name)
+
+# Finazapp tests models
+
+    def test_create_pre_transaction(self):
+        """Test creating a pretransaction successful"""
+        user = get_user_model().objects.create_user('test@example.com', 'sample123')
+        pre_transaction = models.Pre_transaction.objects.create(
+            user=user,
+            description = 'Te informamos que se ha realizado una compra por $5.987 con Tarjeta de Crédito ****1356 en UBER LAS CONDES CL el 03/11/2022 21:10. Revisa Saldos y Movimientos en App Mi Banco o Banco en Línea.',
+        )
+
+        self.assertEqual(str(pre_transaction), pre_transaction.description)
+
+    def test_create_transaction(self):
+        """Test creating a transaction successful"""
+        user = get_user_model().objects.create_user('test@example.com', 'sample123')
+        transaction = models.Transaction.objects.create(
+            user=user,
+            billing_month = 'July',
+            date = '06/11/2022 12:22',
+            income = 0,
+            expense = 12345,
+            card = 'Tarjeta de Crédito ****1356',
+            currency = 'CLP',
+            supplier = 'UBER LAS CONDES CL',
+            category = 'Carrete'
+        )
+
+        self.assertEqual(str(transaction), transaction.category)
 
 # new line at the end of the file
