@@ -8,8 +8,8 @@ from rest_framework.routers import DefaultRouter
 from transaction import views
 
 router = DefaultRouter()
-router.register('pre-transaction', views.Pre_transactionViewSet)
-router.register('transactiom', views.TransactionViewSet)
+router.register('pre_transactions', views.Pre_transactionViewSet)
+router.register('transactions', views.TransactionViewSet)
 
 app_name = 'transaction'
 

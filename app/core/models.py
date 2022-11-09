@@ -82,6 +82,24 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+class Transaction(models.Model):
+    """Transaction estructure."""
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete= models.CASCADE
+    )
+    billing_month = models.CharField(max_length=255, blank=True, null=True)
+    date = models.CharField(max_length=255, blank=True, null=True)
+    income = models.IntegerField(blank=True,null=True)
+    expense = models.IntegerField(blank=True,null=True)
+    card = models.CharField(max_length=255, blank=True, null=True)
+    currency = models.CharField(max_length=255, blank=True, null=True)
+    supplier = models.CharField(max_length=255, blank=True, null=True)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    def __str__(self):
+        return self.category
+
+
 class Pre_transaction(models.Model):
     """Pre transaction to convert in transaction."""
     user = models.ForeignKey(
@@ -92,20 +110,4 @@ class Pre_transaction(models.Model):
     def __str__(self):
         return self.description
 
-class Transaction(models.Model):
-    """Transaction estructure."""
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete= models.CASCADE
-    )
-    billing_month = models.CharField(max_length=255)
-    date = models.CharField(max_length=255)
-    income = models.IntegerField()
-    expense = models.IntegerField()
-    card = models.CharField(max_length=255)
-    currency = models.CharField(max_length=255)
-    supplier = models.CharField(max_length=255)
-    category = models.CharField(max_length=255)
-    def __str__(self):
-        return self.category
 # Create your models here.
